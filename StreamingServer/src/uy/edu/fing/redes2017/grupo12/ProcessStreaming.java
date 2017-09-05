@@ -8,6 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
@@ -39,12 +40,8 @@ public class ProcessStreaming  extends Thread{
 			  videoCapture = new VideoCapture(0);
 			else
 			{
-				 videoCapture = new VideoCapture();
-				 videoCapture.open(origen);
+				 videoCapture = new VideoCapture(origen);
 			}
-			// videoCapture.open("test.mp4");
-		
-		
 		
 		final Mat mat=new Mat();
 		int frames=0;
@@ -55,10 +52,16 @@ public class ProcessStreaming  extends Thread{
 		Boolean b=false;
 		while (videoCapture.read(mat)) {
 			
-		  Highgui.imencode(".jpg", mat, bytemat,params);
-		  server.frameToSend=bytemat;
-		  server.numeroFrameLoad++;
-		  server.hayEnvio=true;
+			try {
+				TimeUnit.MILLISECONDS.sleep(40);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			};
+			Highgui.imencode(".jpg", mat, bytemat,params);
+			server.frameToSend=bytemat;
+			server.numeroFrameLoad++;
+			server.hayEnvio=true;
 		  
 		}
 	}
