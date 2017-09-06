@@ -13,18 +13,17 @@ public class ConexionManager extends Thread {
 	 * @param args
 	 */
 	volatile List<ConexionTCP> conexionesTCP;
-	 ServerSocket socketServidor ;
-	 int numCon=0;
+	ServerSocket socketServidor ;
+	int numCon=0;
 	volatile long numeroFrameLoad=0L;
 	volatile boolean hayEnvio=false;
 	volatile long numFrameSend=-1L;
 	volatile MatOfByte frameToSend=null;
 	volatile long frameReallySended=0L;
 	 
-	 public ConexionManager(ServerSocket s)
-	 {
+	public ConexionManager(ServerSocket s){
 		 this.socketServidor=s;
-	 }
+	}
 	
 	@Override
 	public void run()

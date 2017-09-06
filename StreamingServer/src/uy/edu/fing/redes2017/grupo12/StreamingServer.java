@@ -33,7 +33,7 @@ public class StreamingServer {
 		SenderFrame sf= new SenderFrame(cm,mudp);
 		sf.start();
 		
-		ProcessStreaming pf=new ProcessStreaming(cm,"/home/seba/git/streamServer/StreamingServer/src/uy/edu/fing/redes2017/grupo12/friends.mkv");
+		ProcessStreaming pf=new ProcessStreaming(cm, System.getProperty("user.dir") + "/StreamingServer/src/uy/edu/fing/redes2017/grupo12/friends.mkv");
 		pf.start();
 		StatadisitcThread sT= new StatadisitcThread(cm);
 		sT.start();

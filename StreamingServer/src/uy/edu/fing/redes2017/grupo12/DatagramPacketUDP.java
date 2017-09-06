@@ -25,8 +25,7 @@ public class DatagramPacketUDP  {
 	String pedido;
 	Long numPed;
 
-	public DatagramPacketUDP(DatagramSocket s, DatagramPacket recep) throws IOException
-	{
+	public DatagramPacketUDP(DatagramSocket s, DatagramPacket recep) throws IOException{
 		this.s=s;
 		this.recepcion=recep;
 		pedido=new String(recepcion.getData(),0,recepcion.getLength());
@@ -37,20 +36,19 @@ public class DatagramPacketUDP  {
 		
 	}
 		
-	public Boolean enviarFrame(byte[] bytes) throws IOException
-	{
+	public Boolean enviarFrame(byte[] bytes) throws IOException{
 		
 		ByteArrayOutputStream baso= new ByteArrayOutputStream();
 		
 		DataOutputStream bySend= new DataOutputStream(baso);
 		bySend.writeLong(numPed);
 		bySend.write(bytes);
-			bySend.flush();
-			byte [] sb=baso.toByteArray();
-			salidaAlCliente=new DatagramPacket(sb, sb.length, dirDestino, puertoRemoto);
-			s.send(salidaAlCliente);
+		bySend.flush();
+		byte [] sb=baso.toByteArray();
+		salidaAlCliente=new DatagramPacket(sb, sb.length, dirDestino, puertoRemoto);
+		s.send(salidaAlCliente);
 			
-			return true;
+		return true;
 	
 	}
 	

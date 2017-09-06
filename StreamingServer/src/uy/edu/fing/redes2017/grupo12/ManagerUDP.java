@@ -15,18 +15,17 @@ public class ManagerUDP extends Thread {
 	 * @param args
 	 */
 	volatile List<DatagramPacketUDP> dataPackets;
-	 DatagramSocket socketServidor;
-	 int numCon=0;
+	DatagramSocket socketServidor;
+	int numCon=0;
 	volatile long numeroFrameLoad=0L;
 	volatile boolean hayEnvio=false;
 	volatile long numFrameSend=-1L;
 	volatile MatOfByte frameToSend=null;
 	volatile long frameReallySended=0L;
 	 
-	 public ManagerUDP(DatagramSocket s)
-	 {
-		 this.socketServidor=s;
-	 }
+	public ManagerUDP(DatagramSocket s){
+		this.socketServidor=s;
+	}
 	
 	@Override
 	public void run()

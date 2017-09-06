@@ -17,19 +17,20 @@ public class ConexionTCP   {
 	DataOutputStream salidaAlCliente;
 	int puertoRemoto;
 
-	public ConexionTCP(Socket s) throws IOException
-	{
+	public ConexionTCP(Socket s) throws IOException{
+		
 		this.socketConexion=s;
 		salidaAlCliente = new DataOutputStream(this.socketConexion.getOutputStream());
 		puertoRemoto=this.socketConexion.getPort();
+	
 	}
-	public Boolean esActiva()
-	{
+	
+	public Boolean esActiva(){	
 		return this.socketConexion!=null && !this.socketConexion.isClosed();
 	}
 
-	public void cerrar()
-	{
+	public void cerrar(){
+		
 		if(this.socketConexion!=null && this.esActiva())
 			try {
 				this.socketConexion.close();
@@ -38,10 +39,10 @@ public class ConexionTCP   {
 				e.printStackTrace();
 			}
 		System.out.println("Cierre de conexion: puerto remoto:"+puertoRemoto);
+	
 	}
 	
-	public Boolean enviarFrame(byte[] bytes) throws IOException
-	{
+	public Boolean enviarFrame(byte[] bytes) throws IOException{
 	
 		if(this.esActiva())
 		{
@@ -54,8 +55,7 @@ public class ConexionTCP   {
 			return true;
 		}
 		return false;
+	
 	}
-	
 
-	
 }
