@@ -33,15 +33,13 @@ public class ProcessStreaming  extends Thread{
 	public void run() {
 		// TODO Auto-generated method stub
 			
-			List<ConexionTCP> conexionesABorrar= new ArrayList<>();
+		List<ConexionTCP> conexionesABorrar= new ArrayList<>();
 		
-			VideoCapture videoCapture ;
-			if(origen.equals("0"))
-			  videoCapture = new VideoCapture(0);
-			else
-			{
-				 videoCapture = new VideoCapture(origen);
-			}
+		VideoCapture videoCapture ;
+		if(origen.equals("0"))
+			videoCapture = new VideoCapture(0);
+		else
+			videoCapture = new VideoCapture(origen);
 		
 		final Mat mat=new Mat();
 		int frames=0;

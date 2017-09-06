@@ -12,6 +12,7 @@ public class SenderFrame extends Thread {
 	ManagerUDP manUDP;
 	long nFL=-1;
 	MatOfByte fs=null;
+	
 	public SenderFrame(ConexionManager cm, ManagerUDP manUDP)
 	{
 		conMan=cm;
@@ -20,24 +21,17 @@ public class SenderFrame extends Thread {
 	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		while (true)
-		{
-			enviarFrame();
-			
-		}
 		
+		while (true){
+			enviarFrame();
+		}
 	
 	}
 
-	
-	public void enviarFrame()
-	{
+	public void enviarFrame(){
 		
-		
-		
-		if(conMan.hayEnvio)
-		{
+		if(conMan.hayEnvio){
+			
 			conMan.hayEnvio=false;
 			MatOfByte fs=conMan.frameToSend;
 			
@@ -47,30 +41,31 @@ public class SenderFrame extends Thread {
 			Integer actCon=0;
 			Integer fin=conMan.conexionesTCP.size();
 			
-			while(actCon < fin)
-			{
+			while(actCon < fin){
 		
 				ConexionTCP conexionTCP=conMan.conexionesTCP.get(actCon);
-			
-			 boolean b=false;
+				boolean b=false;
 			  
 				try {
+					
 					b=true;
 					if(conexionTCP.esActiva())
 							if(conexionTCP.enviarFrame(fs.toArray()))
 							  b=false;
 				
-				} catch (IOException e) {}
-			
-				if (b)	   
-				{
-					conMan.numCon--;
-					conexionTCP.cerrar();
+				} catch (IOException e) {
 					
+				}
+			
+				if (b){
+					
+					conMan.numCon--;
+					conexionTCP.cerrar();	
 					conexionesTCPB.add(conexionTCP);
+				
 				}
 				actCon++;
-		  }
+			}
 		
 			
 			for (ConexionTCP conexionTCP : conexionesTCPB) 
@@ -86,17 +81,21 @@ public class SenderFrame extends Thread {
 		
 				DatagramPacketUDP dg=manUDP.dataPackets.get(actConU);
 			
-			 if(dg!=null)
-			 {
-				try {
-							dg.enviarFrame(fs.toArray());
-							dPUDPB.add(dg);
-				} catch (IOException e) {}
+				if(dg!=null){
+					
+					try {
+					
+						dg.enviarFrame(fs.toArray());
+						dPUDPB.add(dg);
+				
+					} catch (IOException e) {
+					
+					}
+					actConU++;
+				
+				}
+			}
 			
-			
-				actConU++;
-			 }
-		  }
 			for (DatagramPacketUDP d : dPUDPB) 
 				manUDP.dataPackets.remove(d);
 			
@@ -104,6 +103,5 @@ public class SenderFrame extends Thread {
 		}
 		
 	}
-
-
+	
 }

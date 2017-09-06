@@ -18,6 +18,7 @@ public class StreamingServer {
 	 */
 	
 	public static void main(String[] args) throws Exception {
+		
 		// TODO Auto-generated method stub
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		int puerto = 6789;
@@ -38,8 +39,7 @@ public class StreamingServer {
 		sT.start();
 		
 		System.out.println("Servidor iniciado conexiones activas: 0");
-				
-		
+					
 	}
 	
 }
