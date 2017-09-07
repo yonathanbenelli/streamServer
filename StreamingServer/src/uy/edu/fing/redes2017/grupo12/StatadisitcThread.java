@@ -4,27 +4,26 @@ public class StatadisitcThread extends Thread {
 
 	ConexionManager conMan;
 	
-	public StatadisitcThread(ConexionManager cm)
-	{
+	public StatadisitcThread(ConexionManager cm){
 		conMan=cm;
 	}
 	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		while (true)
-		{
+		
+		while (true){
+			
 			try {
+			
 				Thread.sleep(1000);
-				System.out.println("Conexiones activas:"+conMan.numCon);
-				System.out.println("Frames Leidos:"+conMan.numeroFrameLoad +" Frames enviados:" +conMan.frameReallySended);
+				System.out.println("Conexiones activas: " + conMan.getNumCon());
+				System.out.println("Frames Leidos: " + conMan.getNumeroFrameLoad() + " Frames enviados: " + conMan.getFrameReallySended());
+			
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 		}
-		
 	
 	}
 	

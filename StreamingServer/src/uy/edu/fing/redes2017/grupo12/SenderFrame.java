@@ -8,15 +8,15 @@ import org.opencv.core.MatOfByte;
 
 public class SenderFrame extends Thread {
 
-	ConexionManager conMan;
-	ManagerUDP manUDP;
-	long nFL=-1;
-	MatOfByte fs=null;
+	private ConexionManager conMan;
+	private ManagerUDP manUDP;
+	//private long nFL = -1;
+	//private MatOfByte fs = null;
 	
 	public SenderFrame(ConexionManager cm, ManagerUDP manUDP)
 	{
-		conMan=cm;
-		this.manUDP=manUDP;
+		conMan = cm;
+		this.manUDP = manUDP;
 	}
 	
 	@Override
@@ -30,36 +30,36 @@ public class SenderFrame extends Thread {
 
 	public void enviarFrame(){
 		
-		if(conMan.hayEnvio){
+		if(conMan.isHayEnvio()){
 			
-			conMan.hayEnvio=false;
-			MatOfByte fs=conMan.frameToSend;
+			conMan.setHayEnvio(false);
+			MatOfByte fs = conMan.getFrameToSend();
 			
-			conMan.frameReallySended++;
+			conMan.setFrameReallySended(conMan.getFrameReallySended() + 1);
 			
-			List<ConexionTCP> conexionesTCPB= new ArrayList<>();
-			Integer actCon=0;
-			Integer fin=conMan.conexionesTCP.size();
+			List<ConexionTCP> conexionesTCPB = new ArrayList<>();
+			Integer actCon = 0;
+			Integer fin = conMan.getConexionesTCP().size();
 			
 			while(actCon < fin){
 		
-				ConexionTCP conexionTCP=conMan.conexionesTCP.get(actCon);
-				boolean b=false;
+				ConexionTCP conexionTCP = conMan.getConexionesTCP().get(actCon);
+				boolean b = false;
 			  
 				try {
 					
 					b=true;
 					if(conexionTCP.esActiva())
 							if(conexionTCP.enviarFrame(fs.toArray()))
-							  b=false;
+							  b = false;
 				
 				} catch (IOException e) {
-					
+					e.printStackTrace();
 				}
 			
 				if (b){
 					
-					conMan.numCon--;
+					conMan.setNumCon(conMan.getNumCon() - 1);
 					conexionTCP.cerrar();	
 					conexionesTCPB.add(conexionTCP);
 				
@@ -69,36 +69,27 @@ public class SenderFrame extends Thread {
 		
 			
 			for (ConexionTCP conexionTCP : conexionesTCPB) 
-				conMan.conexionesTCP.remove(conexionTCP);
+				conMan.getConexionesTCP().remove(conexionTCP);
 			
-			Integer actConU=0;
-			Integer finU=manUDP.dataPackets.size();
-			//List<DatagramPacketUDP> dPUDPB= new ArrayList<>();
+			Integer actConU = 0;
+			Integer finU = manUDP.getDataPackets().size();
 			
-			
-			while(actConU < finU)
-			{
+			while(actConU < finU){
 		
-				ClienteUDP dg=manUDP.dataPackets.get(actConU);
+				ClienteUDP dg = manUDP.getDataPackets().get(actConU);
 			
-				if(dg!=null){
+				if(dg != null){
 					
 					try {
-					
 						dg.enviarFrame(fs.toArray());
-					//	dPUDPB.add(dg);
-				
 					} catch (IOException e) {
-					
+						e.printStackTrace();
 					}
 					actConU++;
 				
 				}
+				
 			}
-			
-			//for (DatagramPacketUDP d : dPUDPB) 
-				//manUDP.dataPackets.remove(d);
-			
 			
 		}
 		
