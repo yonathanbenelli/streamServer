@@ -73,20 +73,20 @@ public class SenderFrame extends Thread {
 			
 			Integer actConU=0;
 			Integer finU=manUDP.dataPackets.size();
-			List<DatagramPacketUDP> dPUDPB= new ArrayList<>();
+			//List<DatagramPacketUDP> dPUDPB= new ArrayList<>();
 			
 			
 			while(actConU < finU)
 			{
 		
-				DatagramPacketUDP dg=manUDP.dataPackets.get(actConU);
+				ClienteUDP dg=manUDP.dataPackets.get(actConU);
 			
 				if(dg!=null){
 					
 					try {
 					
 						dg.enviarFrame(fs.toArray());
-						dPUDPB.add(dg);
+					//	dPUDPB.add(dg);
 				
 					} catch (IOException e) {
 					
@@ -96,8 +96,8 @@ public class SenderFrame extends Thread {
 				}
 			}
 			
-			for (DatagramPacketUDP d : dPUDPB) 
-				manUDP.dataPackets.remove(d);
+			//for (DatagramPacketUDP d : dPUDPB) 
+				//manUDP.dataPackets.remove(d);
 			
 			
 		}

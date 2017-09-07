@@ -50,8 +50,11 @@ public class ProcessStreaming  extends Thread{
 		Boolean b=false;
 		while (videoCapture.read(mat)) {
 			
+			if(!origen.equals("0"))
 			try {
-				TimeUnit.MILLISECONDS.sleep(40);
+				
+				long milisADetener = 1000/videoCapture.get(5); 
+				TimeUnit.MILLISECONDS.sleep(milisADetener);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -32,7 +32,8 @@ public class StreamingServer {
 		mudp.start();
 		SenderFrame sf= new SenderFrame(cm,mudp);
 		sf.start();
-		
+		KillUDP ku= new KillUDP(mudp);
+		ku.start();
 		ProcessStreaming pf=new ProcessStreaming(cm, System.getProperty("user.dir") + "/StreamingServer/src/uy/edu/fing/redes2017/grupo12/friends.mkv");
 		pf.start();
 		StatadisitcThread sT= new StatadisitcThread(cm);

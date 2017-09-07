@@ -10,30 +10,37 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.xml.crypto.KeySelector.Purpose;
 
 
 
-public class DatagramPacketUDP  {
+public class ClienteUDP  {
 
 	DatagramPacket recepcion;
 	DatagramPacket salidaAlCliente;
 	int puertoRemoto;
 	InetAddress dirDestino;
 	DatagramSocket s;
-	String pedido;
-	Long numPed;
+	
+	long numPed=0;
+	long miliscon=0;
 
-	public DatagramPacketUDP(DatagramSocket s, DatagramPacket recep) throws IOException{
+	public ClienteUDP(DatagramSocket s, DatagramPacket recep) throws IOException{
 		this.s=s;
 		this.recepcion=recep;
-		pedido=new String(recepcion.getData(),0,recepcion.getLength());
-		String[] pd=pedido.split(":");
-		numPed=Long.parseLong(pd[1]);
+		
 		puertoRemoto=recep.getPort();
 		dirDestino=recep.getAddress();
 		
+		miliscon= (new Date()).getTime();
+		
+		
+	}
+	public void renewCon(){
+		miliscon= (new Date()).getTime();
 	}
 		
 	public Boolean enviarFrame(byte[] bytes) throws IOException{
@@ -47,7 +54,7 @@ public class DatagramPacketUDP  {
 		byte [] sb=baso.toByteArray();
 		salidaAlCliente=new DatagramPacket(sb, sb.length, dirDestino, puertoRemoto);
 		s.send(salidaAlCliente);
-			
+		numPed++;
 		return true;
 	
 	}
