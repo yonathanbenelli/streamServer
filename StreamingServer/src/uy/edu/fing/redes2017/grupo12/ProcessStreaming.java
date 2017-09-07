@@ -53,7 +53,7 @@ public class ProcessStreaming  extends Thread{
 			if(!origen.equals("0"))
 			try {
 				
-				long milisADetener = 1000/videoCapture.get(5); 
+				long milisADetener = (long) (1000/videoCapture.get(5));
 				TimeUnit.MILLISECONDS.sleep(milisADetener);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
