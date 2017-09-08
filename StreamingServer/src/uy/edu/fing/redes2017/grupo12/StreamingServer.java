@@ -32,7 +32,7 @@ public class StreamingServer {
 		sT.start();
 	
 		System.out.println("Servidor iniciado conexiones activas: 0");
-	/*test sourcelair*/				
+	/*test codenvy*/				
 	}
 	
 }
