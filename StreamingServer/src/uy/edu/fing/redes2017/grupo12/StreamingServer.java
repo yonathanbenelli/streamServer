@@ -13,24 +13,21 @@ public class StreamingServer {
 		
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
-		int puerto = 6789;
+		int puertoTCP = 6789;
 		int puertoUDP = 9876;
-		String reproducir = new String();
-		if (args.length > 0){ 
-			puerto = new Integer(args[0]);
-			reproducir = args[1];
+		String reproducir = "0";
+		if (args.length > 2){ 
+			puertoTCP = new Integer(args[0]);
+			puertoUDP = new Integer(args[1]);
+			reproducir = args[2];
 		}
+		ConexionManager cm= new ConexionManager(puertoTCP, puertoUDP);
 		
-		ConexionManager cm = new ConexionManager(new ServerSocket(puerto));
-		cm.start();
-		ManagerUDP mudp = new ManagerUDP(new DatagramSocket(puertoUDP));
-		mudp.start();
-		SenderFrame sf = new SenderFrame(cm,mudp);
-		sf.start();
-		KillUDP ku = new KillUDP(mudp);
-		ku.start();
 		ProcessStreaming pf = new ProcessStreaming(cm, reproducir);
 		pf.start();
+		
+		 SenderFrame sf= new SenderFrame(pf,cm);
+			sf.start();
 		StatadisitcThread sT = new StatadisitcThread(cm);
 		sT.start();
 	

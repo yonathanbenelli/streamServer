@@ -16,7 +16,7 @@ public class StatadisitcThread extends Thread {
 			try {
 			
 				Thread.sleep(1000);
-				System.out.println("Conexiones activas: " + conMan.getNumCon());
+				System.out.println("Conexiones TCP activas: " + conMan.cantConexionesTCP()+" Clientes UDP activos: "+conMan.cantConexionesUDP());
 				System.out.println("Frames Leidos: " + conMan.getNumeroFrameLoad() + " Frames enviados: " + conMan.getFrameReallySended());
 			
 			} catch (InterruptedException e) {

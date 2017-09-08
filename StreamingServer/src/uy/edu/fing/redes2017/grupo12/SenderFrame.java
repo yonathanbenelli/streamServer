@@ -8,15 +8,18 @@ import org.opencv.core.MatOfByte;
 
 public class SenderFrame extends Thread {
 
-	private ConexionManager conMan;
-	private ManagerUDP manUDP;
+	private ProcessStreaming pS;
+	
 	//private long nFL = -1;
 	//private MatOfByte fs = null;
 	
-	public SenderFrame(ConexionManager cm, ManagerUDP manUDP)
+	
+	
+	private ConexionManager conMan; 
+	public SenderFrame(ProcessStreaming pS, ConexionManager cm)
 	{
-		conMan = cm;
-		this.manUDP = manUDP;
+		this.pS = pS;
+		this.conMan=cm;
 	}
 	
 	@Override
@@ -30,69 +33,68 @@ public class SenderFrame extends Thread {
 
 	public void enviarFrame(){
 		
-		if(conMan.isHayEnvio()){
+		if(pS.isHayEnvio()){
 			
-			conMan.setHayEnvio(false);
-			MatOfByte fs = conMan.getFrameToSend();
 			
-			conMan.setFrameReallySended(conMan.getFrameReallySended() + 1);
+			MatOfByte fs = pS.getFrameToSend();
+			pS.setHayEnvio(false);
 			
-			List<ConexionTCP> conexionesTCPB = new ArrayList<>();
 			Integer actCon = 0;
-			Integer fin = conMan.getConexionesTCP().size();
+			Integer fin = conMan.cantConexionesTCP();
 			
 			while(actCon < fin){
 		
-				ConexionTCP conexionTCP = conMan.getConexionesTCP().get(actCon);
-				boolean b = false;
-			  
-				try {
+				ConexionTCP conexionTCP = conMan.obtenerConexioneTCP(actCon);
+				if(conexionTCP!=null)
+				{
+					boolean b = false;
+				  
+					try {
+						
+						b=true;
+						if(conexionTCP.esActiva())
+								if(conexionTCP.enviarFrame(fs.toArray()))
+								  b = false;
 					
-					b=true;
-					if(conexionTCP.esActiva())
-							if(conexionTCP.enviarFrame(fs.toArray()))
-							  b = false;
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			
-				if (b){
+					if (b)
+						conMan.quitarConexion(conexionTCP);
+				
 					
-					conMan.setNumCon(conMan.getNumCon() - 1);
-					conexionTCP.cerrar();	
-					conexionesTCPB.add(conexionTCP);
-				
 				}
 				actCon++;
 			}
 		
 			
-			for (ConexionTCP conexionTCP : conexionesTCPB) 
-				conMan.getConexionesTCP().remove(conexionTCP);
 			
 			Integer actConU = 0;
-			Integer finU = manUDP.getDataPackets().size();
+			Integer finU = conMan.cantConexionesUDP();
 			
 			while(actConU < finU){
-		
-				ClienteUDP dg = manUDP.getDataPackets().get(actConU);
+				
+				ClienteUDP dg = conMan.obtenerConexioneUDP(actCon);
 			
 				if(dg != null){
 					
 					try {
 						dg.enviarFrame(fs.toArray());
+						
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					actConU++;
+					
 				
 				}
-				
+				actConU++;
 			}
-			
+			conMan.setFrameReallySended(conMan.getFrameReallySended() + 1);
+			conMan.finishSend();
 		}
 		
 	}
+
 	
 }

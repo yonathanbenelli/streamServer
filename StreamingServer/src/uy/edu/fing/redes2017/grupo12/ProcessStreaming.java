@@ -14,11 +14,14 @@ import org.opencv.highgui.VideoCapture;
 
 public class ProcessStreaming  extends Thread{
 
-	private ConexionManager server;	
 	private String origen = "";
 
+	private volatile MatOfByte frameToSend=null;
+	
+	private volatile boolean hayEnvio=false;
+	private ConexionManager cm;
 	public ProcessStreaming(ConexionManager cm, String origen){
-		this.server = cm;
+		this.cm=cm;
 		this.origen = origen;
 	}
 	
@@ -47,13 +50,44 @@ public class ProcessStreaming  extends Thread{
 			
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			};
+			}
 			
 			Highgui.imencode(".jpg", mat, bytemat,params);
-			server.setFrameToSend(bytemat);
-			server.setNumeroFrameLoad(server.getNumeroFrameLoad() + 1);
-			server.setHayEnvio(true);
+			cm.setNumeroFrameLoad(cm.getNumeroFrameLoad()+1);
+			
+			if(!hayEnvio)
+				setFrameToSend(bytemat);
+			
+			hayEnvio=true;
+			
 		  
 		}
 	}
+
+	public String getOrigen() {
+		return origen;
+	}
+
+	public void setOrigen(String origen) {
+		this.origen = origen;
+	}
+
+	
+	public boolean isHayEnvio() {
+		return hayEnvio;
+	}
+
+	public void setHayEnvio(boolean hayEnvio) {
+		this.hayEnvio = hayEnvio;
+	}
+
+	public MatOfByte getFrameToSend() {
+		
+		return frameToSend;
+	}
+
+	public void setFrameToSend(MatOfByte frameToSend) {
+		this.frameToSend = frameToSend;
+	}
+	
 }

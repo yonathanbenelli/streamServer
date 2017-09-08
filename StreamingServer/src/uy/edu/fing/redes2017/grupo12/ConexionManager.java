@@ -1,113 +1,88 @@
 package uy.edu.fing.redes2017.grupo12;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.opencv.core.MatOfByte;
 
-public class ConexionManager extends Thread {
+public class ConexionManager {
 
-	//volatile te permite actualizar las variables compartidas por los threads de forma inmediata.
-	private volatile List<ConexionTCP> conexionesTCP;
-	private volatile long numeroFrameLoad=0L;
-	private volatile boolean hayEnvio=false;
-	private volatile long numFrameSend=-1L;
-	private volatile MatOfByte frameToSend=null;
-	private volatile long frameReallySended=0L;
-	
-	private ServerSocket socketServidor ;
-	private int numCon = 0;
-	
-	public ConexionManager(ServerSocket s){
-		 this.socketServidor=s;
-	}
-	
-	@Override
-	public void run(){
+	/**
+	 * @param args
+	 */
+	private ManagerUDP mudp;
+	private ManagerTCP mtcp;
+	private KillUDP ku;
+	private List<ConexionTCP> lCAB;
+	private  long frameReallySended=0L;
+	private  long numeroFrameLoad=0L;
+	public ConexionManager(int puertoTCP, int puertoUDP) throws IOException {
+		// TODO Auto-generated method stub
+			
+		mtcp = new ManagerTCP(new ServerSocket(puertoTCP));
+		mtcp.start();
+		 mudp = new ManagerUDP(new DatagramSocket(puertoUDP));
+		mudp.start();
 		
-		conexionesTCP= new ArrayList<ConexionTCP>();
-		while(true){
-			
-			ConexionTCP t;
-			try{
-				
-				t = new ConexionTCP(socketServidor.accept());
-				numCon++;
-				System.out.println("Nueva conexion: puerto remoto:" + t.getPuertoRemoto());
-				conexionesTCP.add(t);
-			
-			} catch (IOException e){
-				e.printStackTrace();
+		ku = new KillUDP(mudp);
+		ku.start();
+		
+		
+		
+	}
+	public void quitarConexion(ConexionTCP conexionTCP) {
+		// TODO Auto-generated method stub
+		if(lCAB==null)
+			lCAB= new ArrayList<ConexionTCP>();
+		lCAB.add(conexionTCP);
+	}
+	public Integer cantConexionesUDP() {
+		// TODO Auto-generated method stub
+		if(this.mudp.getDataPackets()!=null)
+			return this.mudp.getDataPackets().size();
+		return 0;
+	}
+	public ClienteUDP obtenerConexioneUDP(Integer actCon) {
+		// TODO Auto-generated method stub
+		if(this.mudp.getDataPackets()!=null && this.mudp.getDataPackets().size()>actCon)
+			return this.mudp.getDataPackets().get(actCon);
+		return null;
+	}
+	public ConexionTCP obtenerConexioneTCP(Integer actCon) {
+		// TODO Auto-generated method stub
+		if(this.mtcp.getConexionesTCP()!=null && this.mtcp.getConexionesTCP().size()>actCon)
+			return this.mtcp.getConexionesTCP().get(actCon);
+		return null;
+	}
+	public Integer cantConexionesTCP() {
+		// TODO Auto-generated method stub
+		if(this.mtcp.getConexionesTCP()!=null)
+			return this.mtcp.getConexionesTCP().size();
+		return 0;
+	}
+	public void finishSend() {
+		// TODO Auto-generated method stub
+		if(lCAB!=null && lCAB.size()>0)
+			for (ConexionTCP c : lCAB) {
+				mtcp.getConexionesTCP().remove(c);
 			}
-			
-		}
-			
+		
+		lCAB= new ArrayList<ConexionTCP>();
 	}
-
-	public List<ConexionTCP> getConexionesTCP() {
-		return conexionesTCP;
-	}
-
-	public long getNumeroFrameLoad() {
-		return numeroFrameLoad;
-	}
-
-	public boolean isHayEnvio() {
-		return hayEnvio;
-	}
-
-	public long getNumFrameSend() {
-		return numFrameSend;
-	}
-
-	public MatOfByte getFrameToSend() {
-		return frameToSend;
-	}
-
 	public long getFrameReallySended() {
 		return frameReallySended;
 	}
-
-	public ServerSocket getSocketServidor() {
-		return socketServidor;
-	}
-
-	public int getNumCon() {
-		return numCon;
-	}
-
-	public void setConexionesTCP(List<ConexionTCP> conexionesTCP) {
-		this.conexionesTCP = conexionesTCP;
-	}
-
-	public void setNumeroFrameLoad(long numeroFrameLoad) {
-		this.numeroFrameLoad = numeroFrameLoad;
-	}
-
-	public void setHayEnvio(boolean hayEnvio) {
-		this.hayEnvio = hayEnvio;
-	}
-
-	public void setNumFrameSend(long numFrameSend) {
-		this.numFrameSend = numFrameSend;
-	}
-
-	public void setFrameToSend(MatOfByte frameToSend) {
-		this.frameToSend = frameToSend;
-	}
-
 	public void setFrameReallySended(long frameReallySended) {
 		this.frameReallySended = frameReallySended;
 	}
-
-	public void setSocketServidor(ServerSocket socketServidor) {
-		this.socketServidor = socketServidor;
+	public long getNumeroFrameLoad() {
+		return numeroFrameLoad;
 	}
-
-	public void setNumCon(int numCon) {
-		this.numCon = numCon;
+	public void setNumeroFrameLoad(long numeroFrameLoad) {
+		this.numeroFrameLoad = numeroFrameLoad;
 	}
-		
+	
 }
