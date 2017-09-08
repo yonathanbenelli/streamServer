@@ -7,18 +7,11 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-//import org.opencv.core.MatOfByte;
 
 public class ManagerUDP extends Thread {
 
 	private volatile List<ClienteUDP> dataPackets;
-	//private volatile long numeroFrameLoad = 0L;
-	//private volatile boolean hayEnvio = false;
-	//private volatile long numFrameSend = -1L;
-	//private volatile MatOfByte frameToSend = null;
-	//private volatile long frameReallySended = 0L;
 	private DatagramSocket socketServidor;
-	//private int numCon = 0;
 
 	public ManagerUDP(DatagramSocket s){
 		this.socketServidor = s;
@@ -39,7 +32,6 @@ public class ManagerUDP extends Thread {
 				if(pedido.equals("inicio")){
 					
 					u = new ClienteUDP(socketServidor,p);
-					//numCon++;
 					dataPackets.add(u);
 					
 				} else{

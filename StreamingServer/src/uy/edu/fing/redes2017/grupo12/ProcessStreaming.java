@@ -1,8 +1,6 @@
 package uy.edu.fing.redes2017.grupo12;
 
 
-//import java.util.ArrayList;
-//import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.opencv.core.Mat;
@@ -20,6 +18,7 @@ public class ProcessStreaming  extends Thread{
 	
 	private volatile boolean hayEnvio=false;
 	private ConexionManager cm;
+	
 	public ProcessStreaming(ConexionManager cm, String origen){
 		this.cm=cm;
 		this.origen = origen;
@@ -27,9 +26,7 @@ public class ProcessStreaming  extends Thread{
 	
 	@Override
 	public void run() {
-			
-		//List<ConexionTCP> conexionesABorrar = new ArrayList<>();
-		
+					
 		VideoCapture videoCapture ;
 		if(origen.equals("0"))
 			videoCapture = new VideoCapture(0);
