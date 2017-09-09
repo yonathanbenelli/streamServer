@@ -26,8 +26,11 @@ public class ProcessStreaming  extends Thread{
 	
 	@Override
 	public void run() {
-					
+		
+		while (true)
+		{
 		VideoCapture videoCapture ;
+		
 		if(origen.equals("0"))
 			videoCapture = new VideoCapture(0);
 		else
@@ -59,7 +62,8 @@ public class ProcessStreaming  extends Thread{
 			
 		  
 		}
-		this.run();
+		}
+		
 	}
 
 	public String getOrigen() {
