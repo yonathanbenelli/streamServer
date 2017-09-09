@@ -59,6 +59,7 @@ public class ProcessStreaming  extends Thread{
 			
 		  
 		}
+		this.run();
 	}
 
 	public String getOrigen() {
