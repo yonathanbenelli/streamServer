@@ -75,7 +75,7 @@ public class SenderFrame extends Thread {
 			
 			while(actConU < finU){
 				
-				ClienteUDP dg = conMan.obtenerConexioneUDP(actCon);
+				ClienteUDP dg = conMan.obtenerConexioneUDP(actConU);
 			
 				if(dg != null){
 					
