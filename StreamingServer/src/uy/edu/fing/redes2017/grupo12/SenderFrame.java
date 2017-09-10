@@ -1,21 +1,15 @@
 package uy.edu.fing.redes2017.grupo12;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import org.opencv.core.MatOfByte;
 
 public class SenderFrame extends Thread {
 
 	private ProcessStreaming pS;
+	private ConexionManager conMan;
 	
-	//private long nFL = -1;
-	//private MatOfByte fs = null;
-	
-	
-	
-	private ConexionManager conMan; 
 	public SenderFrame(ProcessStreaming pS, ConexionManager cm)
 	{
 		this.pS = pS;
