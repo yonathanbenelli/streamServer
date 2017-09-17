@@ -21,7 +21,6 @@ public class ConexionManager {
 		mtcp.start();
 		mudp = new ManagerUDP(new DatagramSocket(puertoUDP));
 		mudp.start();
-		
 		ku = new KillUDP(mudp);
 		ku.start();	
 		

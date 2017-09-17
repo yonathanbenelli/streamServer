@@ -21,17 +21,22 @@ public class KillUDP extends Thread {
 			dataPackets = mudp.getDataPackets();
 			List<ClienteUDP> dPB = new ArrayList<ClienteUDP>() ;
 			long timeact = (new Date()).getTime();
-			if(dataPackets != null && dataPackets.size() > 0)
-			for (ClienteUDP clienteUDP : dataPackets){
+			if(dataPackets != null && dataPackets.size() > 0){
 				
-				if(timeact-clienteUDP.getMiliscon() > 90000) 
-					dPB.add(clienteUDP);
+				for (ClienteUDP clienteUDP : dataPackets){
+				
+					if(clienteUDP != null)
+						if(timeact-clienteUDP.getMiliscon() > 90000) 
+							dPB.add(clienteUDP);
+			
+				}
+				
+				for (ClienteUDP clienteUDP : dPB) {
+					dataPackets.remove(clienteUDP);
+				}
 			
 			}
-			for (ClienteUDP clienteUDP : dPB) {
-				dataPackets.remove(clienteUDP);
-			}
-			
+				
 		}
 			
 	}

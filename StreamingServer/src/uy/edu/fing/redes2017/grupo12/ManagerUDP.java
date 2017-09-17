@@ -15,15 +15,14 @@ public class ManagerUDP extends Thread {
 
 	public ManagerUDP(DatagramSocket s){
 		this.socketServidor = s;
+		dataPackets = new ArrayList<ClienteUDP>();
 	}
 	
 	@Override
 	public void run(){
 		
-		dataPackets = new ArrayList<>();
 		while(true){
 			
-			ClienteUDP u;
 			try {
 				
 				DatagramPacket p = new DatagramPacket(new byte[1024],1024);
@@ -31,18 +30,32 @@ public class ManagerUDP extends Thread {
 				String pedido = new String(p.getData(),0,p.getLength());
 				if(pedido.equals("inicio")){
 					
-					u = new ClienteUDP(socketServidor,p);
+					ClienteUDP u = new ClienteUDP(socketServidor,p);
+					if (!u.isPidioFrame()){
+						u.setPidioFrame(true);
+					}
 					dataPackets.add(u);
 					
-				} else{
+				}else if (pedido.equals("renovar")){
 					
 					ClienteUDP c = buscarCliente(p.getAddress(), p.getPort());
 					if(c != null)
 						c.renewCon();
 					else{
 						//TODO ver si lo meto a prepo en lista de clientes o devuelvo mensaje de error
-					}
+					}	
+				
+				}else if (pedido.equals("pido frame")){
 					
+					ClienteUDP c = buscarCliente(p.getAddress(), p.getPort());
+					if (c != null){
+						if (!c.isPidioFrame())
+							c.setPidioFrame(true);
+					}else {
+						ClienteUDP u = new ClienteUDP(socketServidor,p);
+						dataPackets.add(u);
+					}
+										
 				}
 				
 			} catch (IOException e) {

@@ -27,41 +27,41 @@ public class ProcessStreaming  extends Thread{
 	@Override
 	public void run() {
 		
-		while (true)
-		{
-		VideoCapture videoCapture ;
+		while (true){
 		
-		if(origen.equals("0"))
-			videoCapture = new VideoCapture(0);
-		else
-			videoCapture = new VideoCapture(origen);
-		
-		final Mat mat = new Mat();
-		MatOfInt params = new MatOfInt(Highgui.CV_IMWRITE_JPEG_QUALITY, 80);
-		MatOfByte bytemat = new MatOfByte();
-
-		while (videoCapture.read(mat)){
+			VideoCapture videoCapture ;
 			
-			if(!origen.equals("0"))
-			try {
+			if(origen.equals("0"))
+				videoCapture = new VideoCapture(0);
+			else
+				videoCapture = new VideoCapture(origen);
+			
+			final Mat mat = new Mat();
+			MatOfInt params = new MatOfInt(Highgui.CV_IMWRITE_JPEG_QUALITY, 80);
+			MatOfByte bytemat = new MatOfByte();
+	
+			while (videoCapture.read(mat)){
 				
-				long milisADetener = (long) (videoCapture.get(5));
-				TimeUnit.MILLISECONDS.sleep(milisADetener);
-			
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				if(!origen.equals("0"))
+				try {
+					
+					long milisADetener = (long) (videoCapture.get(5));
+					TimeUnit.MILLISECONDS.sleep(milisADetener);
+				
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				Highgui.imencode(".jpg", mat, bytemat,params);
+				cm.setNumeroFrameLoad(cm.getNumeroFrameLoad()+1);
+				
+				if(!hayEnvio)
+					setFrameToSend(bytemat);
+				
+				hayEnvio=true;
+				
+			  
 			}
-			
-			Highgui.imencode(".jpg", mat, bytemat,params);
-			cm.setNumeroFrameLoad(cm.getNumeroFrameLoad()+1);
-			
-			if(!hayEnvio)
-				setFrameToSend(bytemat);
-			
-			hayEnvio=true;
-			
-		  
-		}
 		}
 		
 	}

@@ -2,7 +2,6 @@ package uy.edu.fing.redes2017.grupo12;
 
 import java.io.IOException;
 
-
 import org.opencv.core.MatOfByte;
 
 public class SenderFrame extends Thread {
@@ -62,19 +61,22 @@ public class SenderFrame extends Thread {
 				actCon++;
 			}
 		
-			
-			
 			Integer actConU = 0;
 			Integer finU = conMan.cantConexionesUDP();
 			
 			while(actConU < finU){
 				
 				ClienteUDP dg = conMan.obtenerConexioneUDP(actConU);
-			
+							
 				if(dg != null){
-					
+				
 					try {
-						dg.enviarFrame(fs.toArray());
+						
+						if (dg.isPidioFrame()){
+							
+							dg.enviarFrame(fs.toArray());
+							dg.setPidioFrame(false);
+						}
 						
 					} catch (IOException e) {
 						e.printStackTrace();

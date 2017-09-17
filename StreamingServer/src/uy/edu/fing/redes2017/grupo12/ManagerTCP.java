@@ -5,8 +5,6 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opencv.core.MatOfByte;
-
 public class ManagerTCP extends Thread {
 
 	//volatile te permite actualizar las variables compartidas por los threads de forma inmediata.
