@@ -13,23 +13,42 @@ import org.opencv.highgui.VideoCapture;
 public class ProcessStreaming  extends Thread{
 
 	private String origen = "";
+	
+	private volatile Boolean fin=false;
+	
 
 	private volatile MatOfByte frameToSend=null;
 	
 	private volatile boolean hayEnvio=false;
 	private ConexionManager cm;
+	VideoCapture videoCapture ;
 	
 	public ProcessStreaming(ConexionManager cm, String origen){
 		this.cm=cm;
 		this.origen = origen;
+		
+	}
+	
+	public void fin()
+	{
+		fin=true;
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		videoCapture.release();
+		System.out.println("FIN: processStreaming");
+		
 	}
 	
 	@Override
 	public void run() {
 		
-		while (true){
+		while (!fin){
+			
 		
-			VideoCapture videoCapture ;
 			
 			if(origen.equals("0"))
 				videoCapture = new VideoCapture(0);
@@ -40,8 +59,7 @@ public class ProcessStreaming  extends Thread{
 			MatOfInt params = new MatOfInt(Highgui.CV_IMWRITE_JPEG_QUALITY, 80);
 			MatOfByte bytemat = new MatOfByte();
 	
-			while (videoCapture.read(mat)){
-				
+			while ( !fin && videoCapture.read(mat)){
 				if(!origen.equals("0"))
 				try {
 					
@@ -62,8 +80,8 @@ public class ProcessStreaming  extends Thread{
 				
 			  
 			}
+			
 		}
-		
 	}
 
 	public String getOrigen() {

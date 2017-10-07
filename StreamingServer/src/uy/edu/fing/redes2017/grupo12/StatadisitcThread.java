@@ -4,14 +4,16 @@ public class StatadisitcThread extends Thread {
 
 	ConexionManager conMan;
 	
+	private volatile Boolean fin=false;
 	public StatadisitcThread(ConexionManager cm){
 		conMan=cm;
+		
 	}
 	
 	@Override
 	public void run() {
 		
-		while (true){
+		while (!fin){
 			
 			try {
 			
@@ -24,7 +26,19 @@ public class StatadisitcThread extends Thread {
 			}
 			
 		}
-	
+
+		
+	}
+	public void fin()
+	{
+		fin=true;
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("FIN: staticThread");
 	}
 	
 }

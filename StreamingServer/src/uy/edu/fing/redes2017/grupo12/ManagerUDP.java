@@ -12,20 +12,23 @@ public class ManagerUDP extends Thread {
 
 	private volatile List<ClienteUDP> dataPackets;
 	private DatagramSocket socketServidor;
-
+	private volatile Boolean fin=false;
+	
 	public ManagerUDP(DatagramSocket s){
 		this.socketServidor = s;
 		dataPackets = new ArrayList<ClienteUDP>();
+		
 	}
 	
 	@Override
 	public void run(){
 		
-		while(true){
+		while(!fin){
 			
 			try {
-				
+			
 				DatagramPacket p = new DatagramPacket(new byte[1024],1024);
+				
 				socketServidor.receive(p);
 				String pedido = new String(p.getData(),0,p.getLength());
 				if(pedido.equals("inicio")){
@@ -63,9 +66,23 @@ public class ManagerUDP extends Thread {
 			}
 			
 		}
-			
+
+
 	}
 	
+	public void fin()
+	{
+
+		fin=true;
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("FIN: managerUDP");
+		
+	}
 	public ClienteUDP buscarCliente(InetAddress a, int p){
 		
 		for (ClienteUDP clienteUDP : dataPackets) {

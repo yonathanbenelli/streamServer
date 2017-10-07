@@ -26,6 +26,14 @@ public class ConexionManager {
 		
 	}
 	
+	public void fin()
+	{
+		
+		mtcp.fin();
+		mudp.fin();
+		ku.fin();
+		System.out.println("FIN: conexionManager");
+	}
 	public void quitarConexion(ConexionTCP conexionTCP) {
 		if(lCAB==null)
 			lCAB= new ArrayList<ConexionTCP>();

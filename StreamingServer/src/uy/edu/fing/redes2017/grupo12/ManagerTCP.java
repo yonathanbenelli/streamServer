@@ -10,19 +10,21 @@ public class ManagerTCP extends Thread {
 	//volatile te permite actualizar las variables compartidas por los threads de forma inmediata.
 	private volatile List<ConexionTCP> conexionesTCP;
 	private int numCon = 0;
-	
-	
+
+	private volatile Boolean fin=false;
+		
 	private ServerSocket socketServidor ;
 	
 	public ManagerTCP(ServerSocket s){
 		 this.socketServidor=s;
+		 
 	}
 	
 	@Override
 	public void run(){
 		
 		conexionesTCP= new ArrayList<ConexionTCP>();
-		while(true){
+		while(!fin){
 			
 			ConexionTCP t;
 			try{
@@ -37,7 +39,22 @@ public class ManagerTCP extends Thread {
 			}
 			
 		}
+
+		
 			
+	}
+	public void fin()
+	{
+
+		fin=true;
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("FIN: managerTCP");
+		
 	}
 
 	public List<ConexionTCP> getConexionesTCP() {

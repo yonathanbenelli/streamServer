@@ -8,20 +8,37 @@ public class SenderFrame extends Thread {
 
 	private ProcessStreaming pS;
 	private ConexionManager conMan;
+
+	private volatile Boolean fin=false;
 	
 	public SenderFrame(ProcessStreaming pS, ConexionManager cm)
 	{
 		this.pS = pS;
 		this.conMan=cm;
+		
 	}
 	
 	@Override
 	public void run() {
 		
-		while (true){
+		while (!fin){
 			enviarFrame();
 		}
+		
+	}
 	
+	public void fin()
+	{
+
+		fin=true;
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("FIN: senderFrame");
+		
 	}
 
 	public void enviarFrame(){

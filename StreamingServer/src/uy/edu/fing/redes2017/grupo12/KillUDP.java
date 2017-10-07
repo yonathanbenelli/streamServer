@@ -8,15 +8,18 @@ public class KillUDP extends Thread {
 
 	private volatile List<ClienteUDP> dataPackets;
 	private ManagerUDP mudp;
-	 
+
+	private volatile Boolean fin=false;
+	
 	public KillUDP(ManagerUDP mudp){
 		this.mudp = mudp;
+		
 	}
 	
 	@Override
 	public void run(){
 		
-		while(true){
+		while(!fin){
 			
 			dataPackets = mudp.getDataPackets();
 			List<ClienteUDP> dPB = new ArrayList<ClienteUDP>() ;
@@ -38,7 +41,22 @@ public class KillUDP extends Thread {
 			}
 				
 		}
-			
+		
+		
+		
+	}
+	public void fin()
+	{
+
+		fin=true;
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("FIN: killUDP");
+		
 	}
 	
 }
