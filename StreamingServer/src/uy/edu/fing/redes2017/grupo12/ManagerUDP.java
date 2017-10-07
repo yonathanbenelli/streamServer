@@ -44,10 +44,7 @@ public class ManagerUDP extends Thread {
 					ClienteUDP c = buscarCliente(p.getAddress(), p.getPort());
 					if(c != null)
 						c.renewCon();
-					else{
-						//TODO ver si lo meto a prepo en lista de clientes o devuelvo mensaje de error
-					}	
-				
+					
 				}else if (pedido.equals("pido frame")){
 					
 					ClienteUDP c = buscarCliente(p.getAddress(), p.getPort());

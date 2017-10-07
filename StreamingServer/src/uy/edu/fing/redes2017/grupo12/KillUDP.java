@@ -23,7 +23,7 @@ public class KillUDP extends Thread {
 			
 			dataPackets = mudp.getDataPackets();
 			List<ClienteUDP> dPB = new ArrayList<ClienteUDP>() ;
-			long timeact = (new Date()).getTime();
+			long timeact =  System.currentTimeMillis();
 			if(dataPackets != null && dataPackets.size() > 0){
 				
 				for (ClienteUDP clienteUDP : dataPackets){
