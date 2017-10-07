@@ -22,11 +22,11 @@ public void attachShutDownHook() {
 	Runtime.getRuntime().addShutdownHook(new Thread() {
         @Override
         public void run() {
-        
-        pf.fin();
-        sf.fin();
-        cm.fin();
         sT.fin();
+        sf.fin();
+        pf.fin();
+        cm.fin();
+        
             System.out.println("exit ......");
         }
     });

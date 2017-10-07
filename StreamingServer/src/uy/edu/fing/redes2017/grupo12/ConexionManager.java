@@ -72,7 +72,9 @@ public class ConexionManager {
 		// TODO Auto-generated method stub
 		if(lCAB!=null && lCAB.size()>0)
 			for (ConexionTCP c : lCAB) {
+				
 				mtcp.getConexionesTCP().remove(c);
+				c.cerrar();
 			}
 		
 		lCAB= new ArrayList<ConexionTCP>();

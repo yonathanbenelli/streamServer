@@ -57,19 +57,12 @@ public class SenderFrame extends Thread {
 				ConexionTCP conexionTCP = conMan.obtenerConexioneTCP(actCon);
 				if(conexionTCP!=null)
 				{
-					boolean b = false;
+					boolean b = true;
 				  
-					try {
 						
-						b=true;
-						if(conexionTCP.esActiva())
 								if(conexionTCP.enviarFrame(fs.toArray()))
 								  b = false;
 					
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				
 					if (b)
 						conMan.quitarConexion(conexionTCP);
 				

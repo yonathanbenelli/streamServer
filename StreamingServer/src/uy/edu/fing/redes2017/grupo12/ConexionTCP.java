@@ -14,13 +14,14 @@ public class ConexionTCP   {
 	public ConexionTCP(Socket s) throws IOException{
 		
 		this.socketConexion = s;
+		this.socketConexion.setSoLinger(true,1);
 		salidaAlCliente = new DataOutputStream(this.socketConexion.getOutputStream());
 		puertoRemoto = this.socketConexion.getPort();
 	
 	}
 	
 	public Boolean esActiva(){	
-		return this.socketConexion != null && !this.socketConexion.isClosed();
+		return this.socketConexion != null && !this.socketConexion.isClosed() ;
 	}
 
 	public void cerrar(){
@@ -28,6 +29,7 @@ public class ConexionTCP   {
 		if(this.socketConexion != null && this.esActiva()){
 			
 			try {
+				
 				this.socketConexion.close();
 			} catch (IOException e){
 				e.printStackTrace();
@@ -38,13 +40,21 @@ public class ConexionTCP   {
 	
 	}
 	
-	public Boolean enviarFrame(byte[] bytes) throws IOException{
+	public Boolean enviarFrame(byte[] bytes) {
 	
 		if(this.esActiva()){
 			
-			salidaAlCliente.writeInt(bytes.length); // write length of the message
-			salidaAlCliente.write(bytes);
-			return true;
+			try {
+				salidaAlCliente.writeInt(bytes.length);
+				
+				salidaAlCliente.write(bytes);
+				return true;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			} // write length of the message
+			
+			
 			
 		}
 		return false;

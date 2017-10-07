@@ -18,6 +18,7 @@ public class ManagerTCP extends Thread {
 	public ManagerTCP(ServerSocket s){
 		 this.socketServidor=s;
 		 
+		 
 	}
 	
 	@Override
@@ -52,6 +53,9 @@ public class ManagerTCP extends Thread {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		for (ConexionTCP conexionTCP : conexionesTCP) {
+			conexionTCP.cerrar();
 		}
 		System.out.println("FIN: managerTCP");
 		
