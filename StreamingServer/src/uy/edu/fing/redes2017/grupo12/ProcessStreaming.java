@@ -70,6 +70,7 @@ public class ProcessStreaming  extends Thread{
 							Highgui.imencode(".jpg", mat, bytemat,params);
 							Long tfin=System.currentTimeMillis();
 							Long tiempo_espera=(1000/fps)-(tfin-tini);
+							
 							if(tiempo_espera>0)
 							TimeUnit.MILLISECONDS.sleep(tiempo_espera);
 							
