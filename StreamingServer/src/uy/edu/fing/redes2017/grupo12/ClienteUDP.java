@@ -27,7 +27,7 @@ public class ClienteUDP  {
 	}
 	
 	public void renewCon(){
-		miliscon = System.currentTimeMillis();
+		miliscon = (new Date()).getTime();
 	}
 		
 	public Boolean enviarFrame(byte[] bytes) throws IOException{

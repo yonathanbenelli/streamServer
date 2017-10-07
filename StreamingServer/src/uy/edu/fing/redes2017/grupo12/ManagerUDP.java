@@ -25,11 +25,13 @@ public class ManagerUDP extends Thread {
 		
 		while(!fin){
 			
+
 			try {
 			
 				DatagramPacket p = new DatagramPacket(new byte[1024],1024);
 				
 				socketServidor.receive(p);
+				
 				String pedido = new String(p.getData(),0,p.getLength());
 				if(pedido.equals("inicio")){
 					
@@ -44,7 +46,10 @@ public class ManagerUDP extends Thread {
 					ClienteUDP c = buscarCliente(p.getAddress(), p.getPort());
 					if(c != null)
 						c.renewCon();
-					
+					else{
+						//TODO ver si lo meto a prepo en lista de clientes o devuelvo mensaje de error
+					}	
+				
 				}else if (pedido.equals("pido frame")){
 					
 					ClienteUDP c = buscarCliente(p.getAddress(), p.getPort());
@@ -63,7 +68,6 @@ public class ManagerUDP extends Thread {
 			}
 			
 		}
-
 
 	}
 	
