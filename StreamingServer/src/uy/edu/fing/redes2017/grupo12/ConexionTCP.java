@@ -14,7 +14,7 @@ public class ConexionTCP   {
 	public ConexionTCP(Socket s) throws IOException{
 		
 		this.socketConexion = s;
-		this.socketConexion.setSoLinger(true,1);
+		this.socketConexion. setSoLinger(true,1);
 		salidaAlCliente = new DataOutputStream(this.socketConexion.getOutputStream());
 		puertoRemoto = this.socketConexion.getPort();
 	
