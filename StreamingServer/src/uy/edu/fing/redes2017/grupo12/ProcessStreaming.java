@@ -56,21 +56,31 @@ public class ProcessStreaming  extends Thread{
 				videoCapture = new VideoCapture(origen);
 			
 			final Mat mat = new Mat();
-			MatOfInt params = new MatOfInt(Highgui.CV_IMWRITE_JPEG_QUALITY, 80);
+			MatOfInt params = new MatOfInt(Highgui.IMWRITE_JPEG_QUALITY, 80);
 			MatOfByte bytemat = new MatOfByte();
 	
 			while ( !fin && videoCapture.read(mat)){
 				if(!origen.equals("0"))
-				try {
-					
-					long milisADetener = (long) (videoCapture.get(5));
-					TimeUnit.MILLISECONDS.sleep(milisADetener);
-				
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				{
+						try {
+							
+							long fps = (long) (videoCapture.get(5));
+							
+							Long tini=System.currentTimeMillis();
+							Highgui.imencode(".jpg", mat, bytemat,params);
+							Long tfin=System.currentTimeMillis();
+							Long tiempo_espera=(1000/fps)-(tfin-tini);
+							if(tiempo_espera>0)
+							TimeUnit.MILLISECONDS.sleep(tiempo_espera);
+							
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 				}
-				
-				Highgui.imencode(".jpg", mat, bytemat,params);
+				else
+				{
+					Highgui.imencode(".jpg", mat, bytemat,params);
+				}
 				cm.setNumeroFrameLoad(cm.getNumeroFrameLoad()+1);
 	
 				if(!hayEnvio)
@@ -78,7 +88,6 @@ public class ProcessStreaming  extends Thread{
 				
 				hayEnvio=true;
 				
-			  
 			}
 			
 		}
