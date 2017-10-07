@@ -1,6 +1,8 @@
 package uy.edu.fing.redes2017.grupo12;
 
 
+import java.io.File;
+
 import org.opencv.core.Core;
 
 
@@ -17,9 +19,8 @@ public class StreamingServer {
 		
 		int puertoTCP = new Integer(args[0]);;
 		int puertoUDP = new Integer(args[1]);
-		String reproducir = args[2];;
-
-		 cm= new ConexionManager(puertoTCP, puertoUDP);
+		String reproducir = args[2];
+ 		 cm= new ConexionManager(puertoTCP, puertoUDP);
 		
 		ProcessStreaming pf = new ProcessStreaming(cm, reproducir);
 		pf.start();

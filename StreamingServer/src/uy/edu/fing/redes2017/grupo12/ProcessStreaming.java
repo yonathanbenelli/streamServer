@@ -72,7 +72,7 @@ public class ProcessStreaming  extends Thread{
 				
 				Highgui.imencode(".jpg", mat, bytemat,params);
 				cm.setNumeroFrameLoad(cm.getNumeroFrameLoad()+1);
-				
+	
 				if(!hayEnvio)
 					setFrameToSend(bytemat);
 				
